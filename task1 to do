@@ -1,0 +1,123 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+
+class Task {
+    private String name;
+    private String description;
+
+    public Task(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Task: " + name + "\nDescription: " + description;
+    }
+}
+
+class ToDoList {
+    private ArrayList<Task> tasks;
+
+    public ToDoList() {
+        tasks = new ArrayList<>();
+    }
+
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
+
+    public void editTask(int index, String name, String description) {
+        if (index >= 0 && index < tasks.size()) {
+            Task task = tasks.get(index);
+            task.setName(name);
+            task.setDescription(description);
+        } else {
+            System.out.println("Invalid task index.");
+        }
+    }
+
+    public void removeTask(int index) {
+        if (index >= 0 && index < tasks.size()) {
+            tasks.remove(index);
+        } else {
+            System.out.println("Invalid task index.");
+        }
+    }
+
+    public void displayTasks() {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks available.");
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println("Task " + (i + 1) + ":");
+                System.out.println(tasks.get(i));
+            }
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ToDoList toDoList = new ToDoList();
+
+        while (true) {
+            System.out.println("\n1. Add Task\n2. Edit Task\n3. Remove Task\n4. Display Tasks\n5. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter task name: ");
+                    String name = scanner.nextLine();
+                    System.out.print("Enter task description: ");
+                    String description = scanner.nextLine();
+                    Task taskToAdd = new Task(name, description);
+                    toDoList.addTask(taskToAdd);
+                    break;
+                case 2:
+                    System.out.print("Enter task index to edit: ");
+                    int editIndex = scanner.nextInt();
+                    scanner.nextLine(); // Consume newline
+                    System.out.print("Enter new task name: ");
+                    String newName = scanner.nextLine();
+                    System.out.print("Enter new task description: ");
+                    String newDescription = scanner.nextLine();
+                    toDoList.editTask(editIndex - 1, newName, newDescription);
+                    break;
+                case 3:
+                    System.out.print("Enter task index to remove: ");
+                    int removeIndex = scanner.nextInt();
+                    toDoList.removeTask(removeIndex - 1);
+                    break;
+                case 4:
+                    toDoList.displayTasks();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    System.exit(0);
+                    break;
+                default:
+                    System.out.println("Invalid choice.");
+            }
+        }
+    }
+}
